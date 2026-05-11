@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String?
+  balance   Float    @default(0.0) // Platform balance
+  quotes    Quote[]
+  withdraws Withdrawal[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Quote {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  amount      Float
+  status      String   @default("PENDING") // PENDING, PAID
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Withdrawal {
+  id        String   @id @default(uuid())
+  amount    Float
+  status    String   @default("COMPLETED") // PENDING, COMPLETED (just mock it as completed for MVP)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
