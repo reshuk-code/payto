@@ -13,12 +13,18 @@ async function connectPostgres(url) {
   const pool = new Pool({ connectionString: url, max: 5 });
 
   // Serialize the schema run so parallel cold starts don't race each other.
+  // A transaction-level lock is used because poolers like Neon's PgBouncer can move a
+  // session between backends; the lock is released automatically on COMMIT/ROLLBACK.
   const client = await pool.connect();
   try {
-    await client.query('SELECT pg_advisory_lock($1)', [MIGRATION_LOCK_ID]);
+    await client.query('BEGIN');
+    await client.query('SELECT pg_advisory_xact_lock($1)', [MIGRATION_LOCK_ID]);
     await client.query(SCHEMA_SQL);
+    await client.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK').catch(() => {});
+    throw err;
   } finally {
-    await client.query('SELECT pg_advisory_unlock($1)', [MIGRATION_LOCK_ID]).catch(() => {});
     client.release();
   }
 
