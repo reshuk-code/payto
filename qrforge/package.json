@@ -1,0 +1,30 @@
+{
+  "name": "qrforge",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Dynamic QR codes that never expire: editable destinations and scan analytics.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "node --test tests/*.test.js"
+  },
+  "engines": {
+    "node": ">=20.9"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "^0.5.15",
+    "bcryptjs": "^3.0.3",
+    "next": "^16.4.5",
+    "pg": "^8.23.1",
+    "qrcode": "^1.5.4",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "server-only": "^0.0.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.5",
+    "tailwindcss": "^4.3.5"
+  }
+}
