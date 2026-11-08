@@ -4,6 +4,9 @@ Dynamic QR codes that never expire. Print once, change the link anytime, and see
 
 This is the MVP prototype.
 
+**Live:** https://qrforge-seven-phi.vercel.app
+(Vercel project `qrforge`, Neon database `qrforge` in Singapore, functions in `sin1`.)
+
 ## What works
 
 - **Accounts**: email + password sign up and log in (bcrypt, database sessions, httpOnly cookie)
